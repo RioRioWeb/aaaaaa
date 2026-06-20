@@ -21,37 +21,48 @@ CTRL+Cでサーバを終了
 
 ## ディレクトリ構成
 ```text
-reservation_app/
-├── app.py                  # アプリの起動エントリーポイント（Blueprintの登録など）
-├── config.py               # DB接続設定（環境変数など）
-├── extensions.py           # SQLAlchemyインスタンスの初期化（循環インポート防止）
+test_drive_reservation/
+├── app.py                 # アプリケーションの起動と初期化（エントリーポイント）
+├── extensions.py          # 拡張機能（DBなど）のインスタンス定義
+├── config.py              # 環境変数・DB接続設定
 │
-├── models/                 # 【Model】データベースの定義・ビジネスロジック
-│   └── reservation.py      # 予約テーブル・車種テーブルの定義
+├── models/                # 【Model層】 データベースのテーブル定義
+│   ├── __init__.py        # パッケージ化のための空ファイル
+│   ├── car.py             # 車種マスタテーブルの定義
+│   └── reservation.py     # 予約トランザクションテーブルの定義
 │
-├── views/                  # 【Controller】ルーティングと交通整理（Blueprint）
-│   ├── booking.py          # 新規予約・Top用のBlueprint
-│   └── enquiry.py          # 照会・変更・キャンセル用のBlueprint
+├── services/                  # 【Service層】 ビジネスロジックとDB操作
+│   ├── __init__.py            # パッケージ化のための空ファイル
+│   ├── reservation_service.py # 新規予約に関する処理（データ検証、DB保存など）
+│   └── inquiry_service.py     # 予約照会・変更・キャンセルに関する処理（認証、DB更新など）
 │
-└── templates/              # 【View】画面テンプレート（HTML / UI層）
-    ├── base.html           # 全画面共通のベースレイアウト（店名表示など）
-    ├── booking/            # 新規予約系の画面（0〜4）
-    │   ├── top.html        # 0
-    │   ├── select_car_datetime.html # 1
-    │   ├── input_customer.html # 2
-    │   ├── confirm.html    # 3
-    │   └── complete.html   # 4
-    └── enquiry/            # 照会・変更・キャンセル系の画面（5〜7）
-        ├── auth.html       # 5
-        ├── detail.html     # 6
-        └── cancel_confirm.html # 7
+├── views/                 # 【Controller層】 ルーティングと画面遷移
+│   ├── __init__.py        # パッケージ化のための空ファイル
+│   ├── top.py             # Top画面のルーティング（Blueprint）
+│   ├── reservation.py     # 新規予約フローのルーティング（Blueprint）
+│   └── inquiry.py         # 予約照会・変更・キャンセルフローのルーティング（Blueprint）
+│
+└── templates/             # 【View層】HTMLテンプレート（Jinja2）
+    ├── base.html          # 全画面共通のレイアウト（ヘッダー・フッターなど）
+    ├── top.html           # Top画面
+    ├── reservation/
+    │   ├── select.html    # 車種・日時選択画面
+    │   ├── customer.html  # お客様情報入力画面
+    │   ├── confirm.html   # 入力情報確認画面
+    │   └── complete.html  # 送信完了画面
+    └── inquiry/
+        ├── auth.html      # 本人確認画面
+        ├── detail.html    # 予約照会画面
+        ├── confirm.html   # 変更確認画面
+        ├── cancel.html    # キャンセル確認画面
+        └── complete.html  # 変更・キャンセル完了画面
 ```
 
 ## プロンプト
 
 ```text
 試乗予約サイトを開発する．
-以下の内容を読み，内部設計に関わる提案をしてください．
+以下の内容を読み，命令に従って生成をしてください．
 
 ---用件定義---
 成果物：
@@ -129,7 +140,7 @@ reservation_app/
 ・Brueprint
 
 ---アーキテクチャ（設計思想）---
-・MVCモデル
+・MVC+Sモデル
 ・保守性を高くする（開発者間での役割分担，テスト，改修がしやすい）
 
 ---バイブコーディングの進め方---
@@ -138,9 +149,6 @@ reservation_app/
 4. エラー処理をするコードの実装
 5. テストコードの実装
 
----提案してほしい内部設計---
-1. ディレクトリ構成
-2. 各ファイルに書く処理
-2. ルーティング定義
-3. DBのテーブル定義
+---命令---
+
 ```
