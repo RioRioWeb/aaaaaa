@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>お客様情報入力</title>
+	</head>
+	<body>
+		<h1>お客様情報入力</h1>
+		<form method="post">
+			<div>
+				<label>姓</label>
+				<input name="last_name" value="{{ data.get('last_name','') }}">
+			</div>
+			<div>
+				<label>名</label>
+				<input name="first_name" value="{{ data.get('first_name','') }}">
+			</div>
+			<div>
+				<label>電話番号</label>
+				<input name="phone" value="{{ data.get('phone','') }}">
+			</div>
+			<div>
+				<label>メールアドレス</label>
+				<input name="email" value="{{ data.get('email','') }}">
+			</div>
+			<button type="submit">次へ</button>
+		</form>
+	</body>
+</html>
+

@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>車種・日時選択</title>
+	</head>
+	<body>
+		<h1>車種・日時選択</h1>
+		<form method="post">
+			<label for="car_id">車種</label>
+			<select name="car_id" id="car_id">
+				{% for car in cars %}
+				<option value="{{ car.id }}">{{ car.name }}</option>
+				{% endfor %}
+			</select>
+
+			<div>
+				<label for="scheduled_at">日時（ISO形式: YYYY-MM-DDTHH:MM:SS）</label>
+				<input type="text" id="scheduled_at" name="scheduled_at" placeholder="2026-06-21T10:00:00">
+			</div>
+
+			<button type="submit">次へ</button>
+		</form>
+	</body>
+</html>
+
