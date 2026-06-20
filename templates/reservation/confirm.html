@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>入力確認</title>
+	</head>
+	<body>
+		<h1>入力確認</h1>
+		<dl>
+			<dt>車種</dt>
+			<dd>{{ data.get('car_id') }}</dd>
+			<dt>日時</dt>
+			<dd>{{ data.get('scheduled_at') }}</dd>
+			<dt>姓</dt>
+			<dd>{{ data.get('last_name') }}</dd>
+			<dt>名</dt>
+			<dd>{{ data.get('first_name') }}</dd>
+			<dt>電話番号</dt>
+			<dd>{{ data.get('phone') }}</dd>
+			<dt>メール</dt>
+			<dd>{{ data.get('email') }}</dd>
+		</dl>
+		<form method="post">
+			<button type="submit">送信</button>
+		</form>
+	</body>
+</html>
+
