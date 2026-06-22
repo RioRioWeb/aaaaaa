@@ -7,16 +7,27 @@
 	<body>
 		<h1>車種・日時選択</h1>
 		<form method="post">
-			<label for="car_id">車種</label>
-			<select name="car_id" id="car_id">
+			<label>車種</label>
+			<select name="car_id">
+				<option value="" {% if not data.get('car_id') %}selected{% endif %}></option>
 				{% for car in cars %}
-				<option value="{{ car.id }}">{{ car.name }}</option>
+				<option value="{{ car.id }}" {% if data.get('car_id') and data.get('car_id')|int == car.id %}selected{% endif %}>{{ car.name }}</option>
 				{% endfor %}
 			</select>
 
 			<div>
-				<label for="scheduled_at">日時（ISO形式: YYYY-MM-DDTHH:MM:SS）</label>
-				<input type="text" id="scheduled_at" name="scheduled_at" placeholder="2026-06-21T10:00:00">
+				<label>日付</label>
+				<input type="date" name="reservation_date" value="{{ data.get('reservation_date') or '' }}">
+			</div>
+
+			<div>
+				<label>時間帯</label>
+				<select name="reservation_time">
+					<option value="" {% if not data.get('reservation_time') %}selected{% endif %}></option>
+					<option value="10:00-12:00" {% if data.get('reservation_time') == '10:00-12:00' %}selected{% endif %}>10:00~12:00</option>
+					<option value="13:00-15:00" {% if data.get('reservation_time') == '13:00-15:00' %}selected{% endif %}>13:00~15:00</option>
+					<option value="16:00-18:00" {% if data.get('reservation_time') == '16:00-18:00' %}selected{% endif %}>16:00~18:00</option>
+				</select>
 			</div>
 
 			<button type="submit">次へ</button>

@@ -8,9 +8,9 @@
 		<h1>入力確認</h1>
 		<dl>
 			<dt>車種</dt>
-			<dd>{{ data.get('car_id') }}</dd>
+			<dd>{{ car_name or data.get('car_id') }}</dd>
 			<dt>日時</dt>
-			<dd>{{ data.get('scheduled_at') }}</dd>
+			<dd>{{ data.get('reservation_date') }} {{ data.get('reservation_time') }}</dd>
 			<dt>姓</dt>
 			<dd>{{ data.get('last_name') }}</dd>
 			<dt>名</dt>

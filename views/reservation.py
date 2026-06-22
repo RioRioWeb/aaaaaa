@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from datetime import datetime
+from datetime import datetime, date
 
 from services.reservation_service import get_cars, create_reservation
 
@@ -12,26 +12,26 @@ def _get_session_data():
 
 @reservation_bp.route("/select", methods=["GET", "POST"])
 def select():
-	# 車種・日時選択
+	if request.method == "GET":
+		cars = get_cars()
+		data = _get_session_data()
+		return render_template("reservation/select.html", cars=cars, data=data)
+	
 	if request.method == "POST":
 		data = _get_session_data()
 		data["car_id"] = request.form.get("car_id")
-		scheduled = request.form.get("scheduled_at")
-		# parse naive datetime from input
-		try:
-			data["scheduled_at"] = datetime.fromisoformat(scheduled)
-		except Exception:
-			data["scheduled_at"] = None
+		data["reservation_date"] = datetime.fromisoformat(request.form.get("reservation_date")).date()
+		data["reservation_time"] = request.form.get("reservation_time")
 		session.modified = True
 		return redirect(url_for("reservation.customer"))
-
-	cars = get_cars()
-	return render_template("reservation/select.html", cars=cars)
 
 
 @reservation_bp.route("/customer", methods=["GET", "POST"])
 def customer():
-	# お客様情報入力
+	if request.method == "GET":
+		data = _get_session_data()
+		return render_template("reservation/customer.html", data=data)
+
 	if request.method == "POST":
 		data = _get_session_data()
 		data["last_name"] = request.form.get("last_name")
@@ -41,31 +41,36 @@ def customer():
 		session.modified = True
 		return redirect(url_for("reservation.confirm"))
 
-	data = _get_session_data()
-	return render_template("reservation/customer.html", data=data)
-
 
 @reservation_bp.route("/confirm", methods=["GET", "POST"])
 def confirm():
 	data = _get_session_data()
+	
+	if request.method == "GET":
+		cars = get_cars()
+		car_name = None
+		try:
+			cid = int(data.get("car_id")) if data.get("car_id") else None
+			for c in cars:
+				if c.id == cid:
+					car_name = c.name
+		except Exception:
+			car_name = None
+		return render_template("reservation/confirm.html", data=data, car_name=car_name)
+
 	if request.method == "POST":
-		# create reservation
 		payload = {
 			"car_id": data.get("car_id"),
-			"scheduled_at": data.get("scheduled_at"),
+			"reservation_date": data.get("reservation_date"),
+			"reservation_time": data.get("reservation_time"),
 			"last_name": data.get("last_name"),
 			"first_name": data.get("first_name"),
 			"phone": data.get("phone"),
 			"email": data.get("email"),
 		}
 		create_reservation(payload)
-		# clear session data
 		session.pop("reservation", None)
 		return redirect(url_for("reservation.complete"))
-
-	# show confirmation
-	return render_template("reservation/confirm.html", data=data)
-
 
 @reservation_bp.route("/complete", methods=["GET"])
 def complete():
