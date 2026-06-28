@@ -199,7 +199,6 @@ test_drive_reservation/
 │   └── inquiry.py         # 予約照会・変更・キャンセルフローのルーティング（Blueprint）
 │
 └── templates/             # 【View層】HTMLテンプレート（Jinja2）
-    ├── base.html          # 全画面共通のレイアウト（ヘッダー・フッターなど）
     ├── top.html           # Top画面
     ├── reservation/
     │   ├── select.html    # 車種・日時選択画面

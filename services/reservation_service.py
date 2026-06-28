@@ -5,17 +5,7 @@ from datetime import datetime, date as date_cls
 
 
 def get_cars():
-	allowed = ["CX-60", "CX-80"]
-	cars = Car.query.filter(Car.name.in_(allowed)).order_by(Car.id).all()
-	existing_names = {c.name for c in cars}
-	to_create = [name for name in allowed if name not in existing_names]
-	for name in to_create:
-		c = Car(name=name)
-		db.session.add(c)
-	if to_create:
-		db.session.commit()
-		cars = Car.query.filter(Car.name.in_(allowed)).order_by(Car.id).all()
-	return cars
+	return Car.query.order_by(Car.id).all()
 
 
 def create_reservation(data: dict) -> Reservation:

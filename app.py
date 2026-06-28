@@ -1,6 +1,9 @@
-from flask import Flask, redirect, url_for
+from flask import Flask
 from config import Config
 from extensions import db
+from models.car import Car
+from views.reservation import reservation_bp
+from views.top import top_bp
 
 
 def create_app():
@@ -9,25 +12,14 @@ def create_app():
 
 	db.init_app(app)
 
-	# register blueprints lazily to avoid circular imports
-	from views.reservation import reservation_bp
-
 	app.register_blueprint(reservation_bp)
+	app.register_blueprint(top_bp)
 
-	@app.route("/")
-	def index():
-		return redirect(url_for("reservation.select"))
-
-	# create DB tables if they don't exist
 	with app.app_context():
 		db.create_all()
-		# seed sample car data if empty
-		from models.car import Car
+		# Initialize master data
 		if not Car.query.first():
-			Car.query.delete()
-			Car(name="モデルA")
-			Car(name="モデルB")
-			db.session.add_all([Car(name="モデルA"), Car(name="モデルB")])
+			db.session.add_all([Car(name="CX-60"), Car(name="CX-80")])
 			db.session.commit()
 
 	return app

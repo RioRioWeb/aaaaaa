@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>試乗予約サイト</title>
+</head>
+<body>
+    <header>
+        <h1>試乗予約サイト</h1>
+    </header>
+    <main>
+        <ul>
+            <li><a href="{{ url_for('reservation.select') }}">新規予約</a></li>
+            <li><a href="{{ url_for('top.inquiry_auth') }}">予約照会</a></li>
+        </ul>
+    </main>
+</body>
+</html>
