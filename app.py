@@ -4,6 +4,7 @@ from extensions import db
 from models.car import Car
 from views.reservation import reservation_bp
 from views.top import top_bp
+from views.inquiry import inquiry_bp
 
 
 def create_app():
@@ -13,6 +14,7 @@ def create_app():
 	db.init_app(app)
 
 	app.register_blueprint(reservation_bp)
+	app.register_blueprint(inquiry_bp)
 	app.register_blueprint(top_bp)
 
 	with app.app_context():
