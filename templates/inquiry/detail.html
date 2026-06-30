@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>予約照会結果</title>
+</head>
+<body>
+    <h1>予約内容</h1>
+
+    <dl>
+        <dt>車種</dt>
+        <dd>{{ reservation.car.name }}</dd>
+
+        <dt>日時</dt>
+        <dd>{{ reservation.reservation_date }} {{ reservation.reservation_time }}</dd>
+    </dl>
+
+    <p><a href="{{ url_for('top.index') }}">Topへ</a></p>
+</body>
+</html>
